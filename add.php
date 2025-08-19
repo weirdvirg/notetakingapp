@@ -9,8 +9,7 @@
 </head>
 <body>
   <h1>Create a Note: </h1>
-  <form method="post" action="<?php echo htmlspecialchars("save.php");?>">
-    <input type="hidden" name="id" value="<?php echo htmlspecialchars($note['id']); ?>"><br>
+  <form method="post" action="save.php">
     <label for="title">Title:</label><br>
     <input type="text" name="title" id="title"><br>
     <label for="content">Content:</label><br>

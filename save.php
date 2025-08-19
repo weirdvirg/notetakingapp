@@ -1,32 +1,32 @@
 <?php
-    require_once("db.php");
+    require_once "config/Db.php";
+    require_once "models/Note.php";
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-        $title = isset($_POST['title']) ? trim($_POST['title']) : '';
-        $content = isset($_POST['content']) ? trim($_POST['content']) : '';
-        $id = isset($_POST['id']) ? (int)$_POST['id'] : null;
+        $database = new Db();
+        $db = $database->connect();
+        $note = new Note($db);
 
-        if (empty($title) || empty($content)) {
+
+
+
+        $note->title = isset($_POST['title']) ? trim($_POST['title']) : '';
+        $note->content = isset($_POST['content']) ? trim($_POST['content']) : '';
+        $note->id = !empty($_POST['id']) ? (int)$_POST['id'] : null;
+
+        if (empty($note->title) || empty($note->content)) {
             header('Location: index.php');
             exit();
         }
 
-        //if there is an id, update the data but if not, create a new note(the else is an extra, not needed for this project)
-        if($id) {
-            $sql = 'UPDATE notes SET title = ?, content = ? WHERE id = ?';
-            $stmt = $conn->prepare($sql);
-            $stmt->execute([$title, $content, $id]);
-        }else{
-            $sql = 'INSERT INTO notes (title, content) VALUES (?, ?)';
-            $stmt = $conn->prepare($sql);
-            $stmt->execute([$title, $content]);
+        if($note->save()){
+            header('Location: index.php');
+            exit();
+        } else{
+            echo'Error Saving The Note';
         }
 
-
-
-        header('Location: index.php');
-        exit();
     }else{
         header('Location: index.php');
         exit();
