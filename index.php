@@ -1,10 +1,12 @@
 <?php
-    require_once("db.php");
+    require_once "config/Db.php";
+    require_once "models/Note.php";
 
-    
-    //Using the prepare and execute method for preventing the sql injection, "this is what i think was unnecessary"
-    $stmt = $conn->prepare("SELECT * FROM notes ORDER BY create_date DESC");
-    $stmt->execute();
+    $database = new Db();
+    $db = $database->connect();
+
+    $note = new Note($db);
+    $stmt = $note->readAll();
     $notes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
@@ -34,13 +36,13 @@
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($notes as $note): ?>
+            <?php foreach ($notes as $noteItem): ?>
                 <tr>
-                    <td><?php echo htmlspecialchars($note['title']);?></td>
-                    <td><?php echo htmlspecialchars($note['content']);?></td>
-                    <td><?php echo date('m-d H:i:s', strtotime($note['create_date']));?></td>
+                    <td><?php echo htmlspecialchars($noteItem['title']);?></td>
+                    <td><?php echo htmlspecialchars($noteItem['content']);?></td>
+                    <td><?php echo date('m-d H:i:s', strtotime($noteItem['create_date']));?></td>
                     <td>
-                        <a href="edit.php?id=<?php echo $note['id']; ?>">EDIT</a>
+                        <a href="edit.php?id=<?php echo $noteItem['id']; ?>">EDIT</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
