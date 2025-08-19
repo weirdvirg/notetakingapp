@@ -3,7 +3,7 @@
     require_once "models/Note.php";
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
+        
         $database = new Db();
         $db = $database->connect();
         $note = new Note($db);

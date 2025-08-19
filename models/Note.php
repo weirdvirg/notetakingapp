@@ -1,6 +1,7 @@
 <?php
 
 class Note {
+    const TABLE_NAME = "notes";
     private $conn;
     public $id;
     public $title;
@@ -12,14 +13,14 @@ class Note {
     }
 
     public function readAll() {
-        $sql = "SELECT * FROM notes ORDER BY create_date DESC";
+        $sql = "SELECT * FROM ".self::TABLE_NAME." ORDER BY create_date DESC";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
         return $stmt;
     }
 
     public function readOne() {
-        $sql = "SELECT * FROM notes WHERE id = ?";
+        $sql = "SELECT * FROM ".self::TABLE_NAME." WHERE id = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(1, $this->id);
         $stmt->execute();
@@ -37,12 +38,12 @@ class Note {
         $this->content = trim(strip_tags($this->content));
 
         if ($this->id) {
-            $sql = "UPDATE notes SET title = :title, content = :content WHERE id = :id";
+            $sql = "UPDATE ".self::TABLE_NAME." SET title = :title, content = :content WHERE id = :id";
             $stmt = $this->conn->prepare($sql);
 
             $stmt->bindParam(":id", $this->id);
         } else {
-            $sql = "INSERT INTO notes (title, content) VALUES (:title, :content)";
+            $sql = "INSERT INTO ".self::TABLE_NAME." (title, content) VALUES (:title, :content)";
             $stmt = $this->conn->prepare($sql);
         }
         $stmt->bindParam(":title", $this->title);

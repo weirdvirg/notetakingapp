@@ -1,7 +1,7 @@
 <?php
     require_once "config/Db.php";
     require_once "models/Note.php";
-
+    
     $database = new Db();
     $db = $database->connect();
 

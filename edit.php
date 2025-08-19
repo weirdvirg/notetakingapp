@@ -6,7 +6,6 @@
         header('Location: index.php');
         exit();
     }
-
     $database = new Db();
     $db = $database->connect();
     $note = new Note($db);

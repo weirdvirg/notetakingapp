@@ -10,16 +10,18 @@
     */
 
     class Db {
-        private $host = "localhost";
-        private $user = "root";
-        private $pass = "";
-        private $dbname = "notes_app";
+        private const HOST = "localhost";
+        private const USER = "root";
+        private const PASS = "";
+        private const DBNAME = "notes_app";
         public $conn;
 
+       
         public function connect(){
             $this->conn = null; 
             try {
-                $this->conn = new PDO("mysql:host={$this->host};dbname={$this->dbname};", $this->user, $this->pass);
+                $pdo = "mysql:host=".self::HOST.";dbname=".self::DBNAME;
+                $this->conn = new PDO($pdo, self::USER, self::PASS);
                 $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             } catch (PDOException $e) {
                 echo "Error Connecting to database: ". $e->getMessage();
