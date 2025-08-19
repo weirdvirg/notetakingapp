@@ -24,7 +24,8 @@
             header('Location: index.php');
             exit();
         } else{
-            echo'Error Saving The Note';
+            header('Location: index.php');
+            exit();
         }
 
     }else{
